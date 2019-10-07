@@ -1,7 +1,13 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '2.1.7.RELEASE'
+    id 'org.springframework.boot' version '2.1.9.RELEASE'
     id 'io.spring.dependency-management' version '1.0.8.RELEASE'
+    id 'io.franzbecker.gradle-lombok' version '3.2.0'
+}
+
+ext {
+    lombokVersion = '1.18.10'
+    h2Version = '1.4.199'
 }
 
 group 'com.griddynamics.ngolovin'
@@ -16,4 +22,8 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation "com.h2database:h2:${h2Version}"
+
+    compileOnly "org.projectlombok:lombok:${lombokVersion}"
 }
