@@ -1,12 +1,13 @@
-package com.griddynamics.ngolovin.store.services;
+package com.griddynamics.ngolovin.store.product.service;
 
-import com.griddynamics.ngolovin.store.entities.Product;
-import com.griddynamics.ngolovin.store.repositories.ProductRepository;
+import com.griddynamics.ngolovin.store.product.dao.ProductRepository;
+import com.griddynamics.ngolovin.store.product.domain.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -17,5 +18,9 @@ public class ProductService {
 
     public List<Product> getAll() {
         return productRepository.findAll();
+    }
+
+    public Optional<Product> getById(Long id) {
+        return productRepository.findById(id);
     }
 }

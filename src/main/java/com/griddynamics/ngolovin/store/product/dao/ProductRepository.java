@@ -1,6 +1,6 @@
-package com.griddynamics.ngolovin.store.repositories;
+package com.griddynamics.ngolovin.store.product.dao;
 
-import com.griddynamics.ngolovin.store.entities.Product;
+import com.griddynamics.ngolovin.store.product.domain.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
