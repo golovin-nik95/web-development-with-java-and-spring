@@ -13,18 +13,19 @@ import java.math.BigDecimal;
 @Entity
 @Table(name = "product")
 @Data
-public class Product {
+public class ProductEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false, updatable = false)
     private Long id;
 
-    @Column(name = "title", columnDefinition = "varchar (255)", nullable = false)
+    @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name = "available", columnDefinition = "bigint", nullable = false)
+    @Column(name = "available", nullable = false)
     private Long available;
 
-    @Column(name = "price", columnDefinition = "numeric (20, 2)", nullable = false)
+    @Column(name = "price", scale = 2, precision = 20, nullable = false)
     private BigDecimal price;
 }

@@ -1,3 +1,8 @@
+store:
+  jwt:
+    secret: vUjDs7oRu1YpgTmgvevlujpIptSdQoq71DA8huO3RFAAYQZmUIW2FaHFrpxiUrm
+    token-ttl: 604800000
+
 spring:
   datasource:
     driver-class-name: org.h2.Driver

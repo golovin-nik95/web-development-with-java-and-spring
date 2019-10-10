@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class ProductNotFoundException extends RuntimeException {
 
     public ProductNotFoundException(Long id) {
-        super("Product with id [" + id + "] doesn't exists");
+        super("Product with id [" + id + "] doesn't exist");
     }
 }

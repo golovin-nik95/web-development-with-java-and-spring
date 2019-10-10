@@ -1,7 +1,7 @@
 package com.griddynamics.ngolovin.store.product.service;
 
 import com.griddynamics.ngolovin.store.product.dao.ProductRepository;
-import com.griddynamics.ngolovin.store.product.domain.Product;
+import com.griddynamics.ngolovin.store.product.domain.ProductEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +16,11 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
-    public List<Product> getAll() {
+    public List<ProductEntity> getAll() {
         return productRepository.findAll();
     }
 
-    public Optional<Product> getById(Long id) {
+    public Optional<ProductEntity> getById(Long id) {
         return productRepository.findById(id);
     }
 }

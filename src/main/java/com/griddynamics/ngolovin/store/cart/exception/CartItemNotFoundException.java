@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class CartItemNotFoundException extends RuntimeException {
 
     public CartItemNotFoundException(Long productId) {
-        super("Item with productId [" + productId + "] doesn't exists");
+        super("Item with productId [" + productId + "] doesn't exist");
     }
 }

@@ -1,6 +1,6 @@
 package com.griddynamics.ngolovin.store.product.web.controller;
 
-import com.griddynamics.ngolovin.store.product.domain.Product;
+import com.griddynamics.ngolovin.store.product.domain.ProductEntity;
 import com.griddynamics.ngolovin.store.product.service.ProductService;
 import com.griddynamics.ngolovin.store.product.web.dto.ProductDto;
 import com.griddynamics.ngolovin.store.product.web.mapper.ProductMapper;
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/product")
+@RequestMapping("api/product")
 @RequiredArgsConstructor
 public class ProductController {
 
@@ -20,7 +20,8 @@ public class ProductController {
 
     @GetMapping
     public List<ProductDto> getAllProducts() {
-        List<Product> products = productService.getAll();
+        List<ProductEntity> products = productService.getAll();
+
         return ProductMapper.INSTANCE.convert(products);
     }
 }

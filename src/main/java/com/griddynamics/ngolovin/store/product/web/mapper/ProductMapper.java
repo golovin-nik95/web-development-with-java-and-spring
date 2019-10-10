@@ -1,6 +1,6 @@
 package com.griddynamics.ngolovin.store.product.web.mapper;
 
-import com.griddynamics.ngolovin.store.product.domain.Product;
+import com.griddynamics.ngolovin.store.product.domain.ProductEntity;
 import com.griddynamics.ngolovin.store.product.web.dto.ProductDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.NullValueCheckStrategy;
@@ -19,7 +19,7 @@ public interface ProductMapper {
 
     ProductMapper INSTANCE = Mappers.getMapper(ProductMapper.class);
 
-    ProductDto convert(Product source);
+    ProductDto convert(ProductEntity source);
 
-    List<ProductDto> convert(List<Product> source);
+    List<ProductDto> convert(List<ProductEntity> source);
 }

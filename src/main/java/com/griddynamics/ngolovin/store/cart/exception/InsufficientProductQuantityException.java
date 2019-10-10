@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(HttpStatus.BAD_REQUEST)
 public class InsufficientProductQuantityException extends RuntimeException {
 
-    public InsufficientProductQuantityException(Long productId) {
-        super("Insufficient quantity of product with id [" + productId + "]");
+    public InsufficientProductQuantityException(Long id) {
+        super("Insufficient quantity of product with id [" + id + "]");
     }
 }

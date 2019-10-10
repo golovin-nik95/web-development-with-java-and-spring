@@ -1,6 +1,6 @@
 package com.griddynamics.ngolovin.store.cart.domain;
 
-import com.griddynamics.ngolovin.store.product.domain.Product;
+import com.griddynamics.ngolovin.store.product.domain.ProductEntity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CartItem {
 
-    private Product product;
+    private ProductEntity product;
     private long quantity;
 }
