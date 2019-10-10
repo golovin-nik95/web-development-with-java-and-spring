@@ -7,7 +7,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -21,12 +20,7 @@ import java.util.Date;
 public class JwtTokenProvider {
 
     private final UserService userService;
-
-    @Value("${store.jwt.secret}")
-    private String jwtSecret;
-
-    @Value("${store.jwt.token-ttl}")
-    private long jwtTokenTtl;
+    private final JwtTokenProperties jwtTokenProperties;
 
     public String generateToken(Authentication authentication) {
         String username = ((User) authentication.getPrincipal()).getUsername();
@@ -35,19 +29,19 @@ public class JwtTokenProvider {
                 .orElseThrow(() -> new UsernameNotFoundException(username));
 
         Date now = new Date();
-        Date expiration = new Date(now.getTime() + jwtTokenTtl);
+        Date expiration = new Date(now.getTime() + jwtTokenProperties.getTimeToLive());
 
         return Jwts.builder()
                 .setSubject(userId.toString())
                 .setIssuedAt(now)
                 .setExpiration(expiration)
-                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .signWith(SignatureAlgorithm.HS512, jwtTokenProperties.getSecretKey())
                 .compact();
     }
 
     Long getUserIdFromToken(String token) {
         Claims claims = Jwts.parser()
-                .setSigningKey(jwtSecret)
+                .setSigningKey(jwtTokenProperties.getSecretKey())
                 .parseClaimsJws(token)
                 .getBody();
 
@@ -57,7 +51,7 @@ public class JwtTokenProvider {
     boolean validateToken(String token) {
         try {
             Jwts.parser()
-                    .setSigningKey(jwtSecret)
+                    .setSigningKey(jwtTokenProperties.getSecretKey())
                     .parseClaimsJws(token);
 
             return true;

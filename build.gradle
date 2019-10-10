@@ -29,8 +29,10 @@ dependencies {
     implementation "com.h2database:h2:${h2Version}"
     implementation "io.jsonwebtoken:jjwt:${jwtVersion}"
 
+    compileOnly 'org.springframework.boot:spring-boot-configuration-processor'
     compileOnly "org.projectlombok:lombok:${lombokVersion}"
     compileOnly "org.mapstruct:mapstruct:${mapstructVersion}"
 
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor "org.mapstruct:mapstruct-processor:${mapstructVersion}"
 }

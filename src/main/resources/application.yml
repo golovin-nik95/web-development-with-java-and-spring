@@ -1,7 +1,8 @@
 store:
   jwt:
-    secret: vUjDs7oRu1YpgTmgvevlujpIptSdQoq71DA8huO3RFAAYQZmUIW2FaHFrpxiUrm
-    token-ttl: 604800000
+    token:
+      secret-key: vUjDs7oRu1YpgTmgvevlujpIptSdQoq71DA8huO3RFAAYQZmUIW2FaHFrpxiUrm
+      time-to-live: 3600000
 
 spring:
   datasource:
