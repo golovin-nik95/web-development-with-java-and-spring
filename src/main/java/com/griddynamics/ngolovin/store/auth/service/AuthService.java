@@ -10,9 +10,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.security.Principal;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -29,7 +33,7 @@ public class AuthService {
 
         String encryptedPassword = passwordEncoder.encode(registerUserDto.getPassword());
         UserEntity user = AuthMapper.INSTANCE.convert(registerUserDto, encryptedPassword);
-        userService.addUser(user);
+        userService.saveUser(user);
     }
 
     public String loginUser(LoginUserDto loginUserDto) {
@@ -37,6 +41,13 @@ public class AuthService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
         return jwtTokenProvider.generateToken(authentication);
+    }
+
+    public String getCurrentLoggedInUserEmail() {
+        return Optional.of(SecurityContextHolder.getContext())
+                .map(SecurityContext::getAuthentication)
+                .map(Principal::getName)
+                .orElse(null);
     }
 
     private Authentication getAuthentication(String email, String password) {

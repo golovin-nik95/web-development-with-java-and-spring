@@ -16,11 +16,15 @@ public class ProductService {
 
     private final ProductRepository productRepository;
 
-    public List<ProductEntity> getAll() {
+    public List<ProductEntity> getAllProducts() {
         return productRepository.findAll();
     }
 
-    public Optional<ProductEntity> getById(Long id) {
+    public Optional<ProductEntity> getProductById(Long id) {
         return productRepository.findById(id);
+    }
+
+    public void saveProducts(List<ProductEntity> products) {
+        productRepository.saveAll(products);
     }
 }

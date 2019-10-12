@@ -17,48 +17,48 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CartService {
 
-    private final ProductService productService;
     private final Cart cart;
+    private final ProductService productService;
 
     public Cart getCart() {
         return cart;
     }
 
-    public CartItem addItem(AddCartItemDto addCartItemDto) {
+    public CartItem addCartItem(AddCartItemDto addCartItemDto) {
         Long productId = addCartItemDto.getProductId();
-        CartItem existedItem = cart.getItems().get(productId);
-        if (existedItem != null) {
+        CartItem existedCartItem = cart.getItems().get(productId);
+        if (existedCartItem != null) {
             throw new CartItemAlreadyExistsException(productId);
         }
 
         Long quantity = addCartItemDto.getQuantity();
         ProductEntity product = getProduct(productId, quantity);
 
-        return putItem(productId, quantity, product);
+        return putCartItem(productId, quantity, product);
     }
 
-    public CartItem updateItem(UpdateCartItemDto updateCartItemDto) {
+    public CartItem updateCartItem(UpdateCartItemDto updateCartItemDto) {
         Long productId = updateCartItemDto.getProductId();
-        CartItem existedItem = cart.getItems().get(productId);
-        if (existedItem == null) {
+        CartItem existedCartItem = cart.getItems().get(productId);
+        if (existedCartItem == null) {
             throw new CartItemNotFoundException(productId);
         }
 
         Long quantity = updateCartItemDto.getQuantity();
         ProductEntity product = getProduct(productId, quantity);
 
-        return putItem(productId, quantity, product);
+        return putCartItem(productId, quantity, product);
     }
 
-    public void removeItem(Long productId) {
-        CartItem item = cart.getItems().remove(productId);
-        if (item == null) {
+    public void removeCartItem(Long productId) {
+        CartItem cartItem = cart.getItems().remove(productId);
+        if (cartItem == null) {
             throw new CartItemNotFoundException(productId);
         }
     }
 
     private ProductEntity getProduct(Long productId, Long quantity) {
-        ProductEntity product = productService.getById(productId)
+        ProductEntity product = productService.getProductById(productId)
                 .orElseThrow(() -> new ProductNotFoundException(productId));
 
         if (quantity > product.getAvailable()) {
@@ -68,10 +68,10 @@ public class CartService {
         return product;
     }
 
-    private CartItem putItem(Long productId, Long quantity, ProductEntity product) {
-        CartItem item = new CartItem(product, quantity);
-        cart.getItems().put(productId, item);
+    private CartItem putCartItem(Long productId, Long quantity, ProductEntity product) {
+        CartItem cartItem = new CartItem(product, quantity);
+        cart.getItems().put(productId, cartItem);
 
-        return item;
+        return cartItem;
     }
 }

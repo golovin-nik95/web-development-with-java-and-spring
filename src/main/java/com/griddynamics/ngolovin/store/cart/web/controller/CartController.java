@@ -38,24 +38,24 @@ public class CartController {
 
     @PostMapping("item")
     @ResponseStatus(HttpStatus.CREATED)
-    public CartItemDto addItem(@RequestBody @Valid AddCartItemDto addCartItemDto) {
-        CartItem item = cartService.addItem(addCartItemDto);
+    public CartItemDto addCartItem(@RequestBody @Valid AddCartItemDto addCartItemDto) {
+        CartItem cartItem = cartService.addCartItem(addCartItemDto);
         Cart cart = cartService.getCart();
 
-        return CartMapper.INSTANCE.convert(item, cart);
+        return CartMapper.INSTANCE.convert(cartItem, cart);
     }
 
     @PutMapping("item")
-    public CartItemDto updateItem(@RequestBody @Valid UpdateCartItemDto updateCartItemDto) {
-        CartItem item = cartService.updateItem(updateCartItemDto);
+    public CartItemDto updateCartItem(@RequestBody @Valid UpdateCartItemDto updateCartItemDto) {
+        CartItem cartItem = cartService.updateCartItem(updateCartItemDto);
         Cart cart = cartService.getCart();
 
-        return CartMapper.INSTANCE.convert(item, cart);
+        return CartMapper.INSTANCE.convert(cartItem, cart);
     }
 
     @DeleteMapping("item/{productId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void removeItem(@PathVariable Long productId) {
-        cartService.removeItem(productId);
+        cartService.removeCartItem(productId);
     }
 }

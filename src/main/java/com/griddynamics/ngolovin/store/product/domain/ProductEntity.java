@@ -11,13 +11,13 @@ import javax.persistence.Table;
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "product")
+@Table(name = "products")
 @Data
 public class ProductEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false, updatable = false)
+    @Column(name = "id", nullable = false, unique = true, updatable = false)
     private Long id;
 
     @Column(name = "title", nullable = false)

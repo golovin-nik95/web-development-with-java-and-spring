@@ -14,12 +14,9 @@ import java.util.List;
         unmappedTargetPolicy = ReportingPolicy.IGNORE,
         nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
         nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
-@SuppressWarnings("unused")
 public interface ProductMapper {
 
     ProductMapper INSTANCE = Mappers.getMapper(ProductMapper.class);
-
-    ProductDto convert(ProductEntity source);
 
     List<ProductDto> convert(List<ProductEntity> source);
 }

@@ -20,7 +20,7 @@ public class ProductController {
 
     @GetMapping
     public List<ProductDto> getAllProducts() {
-        List<ProductEntity> products = productService.getAll();
+        List<ProductEntity> products = productService.getAllProducts();
 
         return ProductMapper.INSTANCE.convert(products);
     }
