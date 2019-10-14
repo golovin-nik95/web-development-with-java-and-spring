@@ -5,7 +5,7 @@ import com.griddynamics.ngolovin.store.auth.web.dto.RegisterUserDto;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public abstract class AuthMapperDecorator implements AuthMapper {
+abstract class AuthMapperDecorator implements AuthMapper {
 
     private final AuthMapper delegate;
 

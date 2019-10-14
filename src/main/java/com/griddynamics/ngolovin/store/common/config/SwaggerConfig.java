@@ -1,5 +1,6 @@
 package com.griddynamics.ngolovin.store.common.config;
 
+import com.google.common.base.Predicates;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.PathSelectors;
@@ -18,15 +19,16 @@ import java.util.Collections;
 @EnableSwagger2
 public class SwaggerConfig {
 
-    private static final String API_PATH_REGEX = "/api/.*";
+    private static final String API_ANT_PATTERN = "/api/**";
     private static final String JWT_AUTHORIZATION = "JWT";
 
     @Bean
     public Docket api() {
+        //noinspection Guava
         return new Docket(DocumentationType.SWAGGER_2)
                 .select()
                 .apis(RequestHandlerSelectors.any())
-                .paths(PathSelectors.regex(API_PATH_REGEX))
+                .paths(Predicates.or(PathSelectors.ant(API_ANT_PATTERN), PathSelectors.ant("/auth/**")))
                 .build()
                 .securityContexts(Collections.singletonList(securityContext()))
                 .securitySchemes(Collections.singletonList(jwtApiKey()));
@@ -39,13 +41,13 @@ public class SwaggerConfig {
     private SecurityContext securityContext() {
         return SecurityContext.builder()
                 .securityReferences(Collections.singletonList(jwtSecurityReference()))
-                .forPaths(PathSelectors.regex(API_PATH_REGEX))
+                .forPaths(PathSelectors.ant(API_ANT_PATTERN))
                 .build();
     }
 
     private SecurityReference jwtSecurityReference() {
         AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
-        AuthorizationScope[] authorizationScopes = { authorizationScope };
-        return new SecurityReference(JWT_AUTHORIZATION, authorizationScopes);
+
+        return new SecurityReference(JWT_AUTHORIZATION, new AuthorizationScope[] { authorizationScope });
     }
 }

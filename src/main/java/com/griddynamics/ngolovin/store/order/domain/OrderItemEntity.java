@@ -27,7 +27,7 @@ public class OrderItemEntity {
     @Column(name = "ordinal", nullable = false)
     private Integer ordinal;
 
-    @ManyToOne(cascade = CascadeType.ALL, optional = false)
+    @ManyToOne(cascade = CascadeType.MERGE, optional = false)
     @JoinColumn(name = "product_id", nullable = false)
     private ProductEntity product;
 

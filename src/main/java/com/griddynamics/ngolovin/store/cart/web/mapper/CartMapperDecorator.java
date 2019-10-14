@@ -20,7 +20,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
-public abstract class CartMapperDecorator implements CartMapper {
+abstract class CartMapperDecorator implements CartMapper {
 
     private final CartMapper delegate;
 
