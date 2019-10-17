@@ -3,6 +3,10 @@ store:
     token:
       secret-key: vUjDs7oRu1YpgTmgvevlujpIptSdQoq71DA8huO3RFAAYQZmUIW2FaHFrpxiUrm
       time-to-live: 3600000
+  brute-force:
+    login-attempt-cache:
+      max-login-attempts: 5
+      time-to-live: 86400000
 
 spring:
   datasource:

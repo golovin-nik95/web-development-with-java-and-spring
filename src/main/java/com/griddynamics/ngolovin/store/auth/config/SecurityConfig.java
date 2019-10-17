@@ -1,5 +1,6 @@
 package com.griddynamics.ngolovin.store.auth.config;
 
+import com.griddynamics.ngolovin.store.auth.bruteforce.LoginAttemptCacheProperties;
 import com.griddynamics.ngolovin.store.auth.jwt.JwtAuthenticationEntryPoint;
 import com.griddynamics.ngolovin.store.auth.jwt.JwtAuthenticationFilter;
 import com.griddynamics.ngolovin.store.auth.jwt.JwtTokenProperties;
@@ -20,7 +21,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-@EnableConfigurationProperties({JwtTokenProperties.class})
+@EnableConfigurationProperties({JwtTokenProperties.class, LoginAttemptCacheProperties.class})
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 

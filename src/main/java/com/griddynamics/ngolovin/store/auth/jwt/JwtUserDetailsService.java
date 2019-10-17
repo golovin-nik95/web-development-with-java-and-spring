@@ -1,6 +1,8 @@
 package com.griddynamics.ngolovin.store.auth.jwt;
 
+import com.griddynamics.ngolovin.store.auth.bruteforce.LoginAttemptService;
 import com.griddynamics.ngolovin.store.auth.domain.UserEntity;
+import com.griddynamics.ngolovin.store.auth.exception.UserIsBlockedException;
 import com.griddynamics.ngolovin.store.auth.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -8,13 +10,13 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.Optional;
 
-@Component
+@Service
 @Slf4j
 @RequiredArgsConstructor
 public class JwtUserDetailsService implements UserDetailsService {
@@ -23,9 +25,12 @@ public class JwtUserDetailsService implements UserDetailsService {
 
     private final UserService userService;
     private final HttpSession session;
+    private final LoginAttemptService loginAttemptService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        checkBruteForce();
+
         return getUserDetailsFromSession()
                 .orElseGet(() -> {
                     UserDetails userDetails = userService.getUserByEmail(username)
@@ -39,6 +44,8 @@ public class JwtUserDetailsService implements UserDetailsService {
     }
 
     UserDetails loadUserById(Long id) throws UsernameNotFoundException {
+        checkBruteForce();
+
         return getUserDetailsFromSession()
                 .orElseGet(() -> {
                     UserDetails userDetails = userService.getUserById(id)
@@ -49,6 +56,12 @@ public class JwtUserDetailsService implements UserDetailsService {
 
                     return userDetails;
                 });
+    }
+
+    private void checkBruteForce() {
+        if (loginAttemptService.isBlocked()) {
+            throw new UserIsBlockedException();
+        }
     }
 
     private Optional<UserDetails> getUserDetailsFromSession() {
