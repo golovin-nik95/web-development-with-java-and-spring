@@ -10,7 +10,6 @@ import com.griddynamics.ngolovin.store.cart.web.dto.CartItemDto;
 import com.griddynamics.ngolovin.store.cart.web.dto.UpdateCartItemDto;
 import com.griddynamics.ngolovin.store.product.dao.ProductRepository;
 import com.griddynamics.ngolovin.store.product.domain.ProductEntity;
-import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,6 +27,9 @@ import java.util.Comparator;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static com.griddynamics.ngolovin.store.StoreTestConfig.USER_EMAIL;
+import static com.griddynamics.ngolovin.store.StoreTestConfig.USER_PASSWORD;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -39,7 +41,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = {StoreTestConfig.class})
 @Transactional
 @AutoConfigureMockMvc
-@WithMockUser(username = StoreTestConfig.USER_EMAIL, password = StoreTestConfig.USER_PASSWORD)
+@WithMockUser(username = USER_EMAIL, password = USER_PASSWORD)
 @RunWith(SpringRunner.class)
 public class CartControllerTest {
 
@@ -70,14 +72,14 @@ public class CartControllerTest {
                 .getResponse()
                 .getContentAsString();
         CartDto cartDto = objectMapper.readValue(responseBody, CartDto.class);
-        Assertions.assertThat(cartDto.getItems()).hasSize(3);
-        Assertions.assertThat(cartDto.getTotal()).isEqualByComparingTo("93.40");
+        assertThat(cartDto.getItems()).hasSize(3);
+        assertThat(cartDto.getTotal()).isEqualByComparingTo("93.40");
 
         CartItemDto cartItemDto = cartDto.getItems().get(0);
-        Assertions.assertThat(cartItemDto.getOrdinal()).isEqualTo(1);
-        Assertions.assertThat(cartItemDto.getProductTitle()).isEqualTo("Pen");
-        Assertions.assertThat(cartItemDto.getQuantity()).isEqualTo(7L);
-        Assertions.assertThat(cartItemDto.getSubtotal()).isEqualByComparingTo("53.20");
+        assertThat(cartItemDto.getOrdinal()).isEqualTo(1);
+        assertThat(cartItemDto.getProductTitle()).isEqualTo("Pen");
+        assertThat(cartItemDto.getQuantity()).isEqualTo(7L);
+        assertThat(cartItemDto.getSubtotal()).isEqualByComparingTo("53.20");
     }
 
     @Test
@@ -105,12 +107,12 @@ public class CartControllerTest {
                 .getResponse()
                 .getContentAsString();
         CartItemDto cartItemDto = objectMapper.readValue(responseBody, CartItemDto.class);
-        Assertions.assertThat(cartItemDto.getOrdinal()).isEqualTo(4L);
-        Assertions.assertThat(cartItemDto.getProductTitle()).isEqualTo(product.getTitle());
-        Assertions.assertThat(cartItemDto.getQuantity()).isEqualTo(quantity);
-        Assertions.assertThat(cartItemDto.getSubtotal()).isEqualByComparingTo(subtotal);
+        assertThat(cartItemDto.getOrdinal()).isEqualTo(4L);
+        assertThat(cartItemDto.getProductTitle()).isEqualTo(product.getTitle());
+        assertThat(cartItemDto.getQuantity()).isEqualTo(quantity);
+        assertThat(cartItemDto.getSubtotal()).isEqualByComparingTo(subtotal);
 
-        Assertions.assertThat(cartItems.get(productId)).isNotNull();
+        assertThat(cartItems.get(productId)).isNotNull();
     }
 
     @Test
@@ -135,12 +137,12 @@ public class CartControllerTest {
                 .getResponse()
                 .getContentAsString();
         CartItemDto cartItemDto = objectMapper.readValue(responseBody, CartItemDto.class);
-        Assertions.assertThat(cartItemDto.getOrdinal()).isEqualTo(1L);
-        Assertions.assertThat(cartItemDto.getProductTitle()).isEqualTo(product.getTitle());
-        Assertions.assertThat(cartItemDto.getQuantity()).isEqualTo(quantity);
-        Assertions.assertThat(cartItemDto.getSubtotal()).isEqualByComparingTo(subtotal);
+        assertThat(cartItemDto.getOrdinal()).isEqualTo(1L);
+        assertThat(cartItemDto.getProductTitle()).isEqualTo(product.getTitle());
+        assertThat(cartItemDto.getQuantity()).isEqualTo(quantity);
+        assertThat(cartItemDto.getSubtotal()).isEqualByComparingTo(subtotal);
 
-        Assertions.assertThat(cartItems.get(productId).getQuantity()).isEqualTo(quantity);
+        assertThat(cartItems.get(productId).getQuantity()).isEqualTo(quantity);
     }
 
     @Test
@@ -154,10 +156,10 @@ public class CartControllerTest {
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
-        Assertions.assertThat(responseBody).isEmpty();
+        assertThat(responseBody).isEmpty();
 
-        Assertions.assertThat(cartItems).hasSize(2);
-        Assertions.assertThat(cartItems.get(productId)).isNull();
+        assertThat(cartItems).hasSize(2);
+        assertThat(cartItems.get(productId)).isNull();
     }
 
     private void fillCart() {

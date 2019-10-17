@@ -28,6 +28,6 @@ Swagger is connected to the project and you can test project API using the link 
 
 ### Check API with integration tests
 
-Integration tests are located in the ./src/test/java directory and you can run them with the command below
+Integration tests are located in the "./src/test/java" directory and you can run them with the command below
 
 `./gradlew test`

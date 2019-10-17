@@ -6,7 +6,6 @@ import com.griddynamics.ngolovin.store.auth.domain.UserEntity;
 import com.griddynamics.ngolovin.store.auth.web.dto.LoginUserDto;
 import com.griddynamics.ngolovin.store.auth.web.dto.RegisterUserDto;
 import com.griddynamics.ngolovin.store.auth.web.dto.TokenDto;
-import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +23,7 @@ import java.util.List;
 import static com.griddynamics.ngolovin.store.StoreTestConfig.USER_EMAIL;
 import static com.griddynamics.ngolovin.store.StoreTestConfig.USER_NAME;
 import static com.griddynamics.ngolovin.store.StoreTestConfig.USER_PASSWORD;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -58,16 +58,16 @@ public class AuthControllerTest {
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
-        Assertions.assertThat(responseBody).isEmpty();
+        assertThat(responseBody).isEmpty();
 
         List<UserEntity> users = userRepository.findAll();
-        Assertions.assertThat(users).hasSize(1);
+        assertThat(users).hasSize(1);
 
         UserEntity user = users.get(0);
-        Assertions.assertThat(user.getId()).isNotNull();
-        Assertions.assertThat(user.getEmail()).isEqualTo(USER_EMAIL);
-        Assertions.assertThat(passwordEncoder.matches(USER_PASSWORD, user.getEncryptedPassword())).isTrue();
-        Assertions.assertThat(user.getName()).isEqualTo(USER_NAME);
+        assertThat(user.getId()).isNotNull();
+        assertThat(user.getEmail()).isEqualTo(USER_EMAIL);
+        assertThat(passwordEncoder.matches(USER_PASSWORD, user.getEncryptedPassword())).isTrue();
+        assertThat(user.getName()).isEqualTo(USER_NAME);
     }
 
     @Test
@@ -85,7 +85,7 @@ public class AuthControllerTest {
                 .getResponse()
                 .getContentAsString();
         TokenDto tokenDto = objectMapper.readValue(responseBody, TokenDto.class);
-        Assertions.assertThat(tokenDto.getToken()).isNotBlank();
-        Assertions.assertThat(tokenDto.getType()).isEqualTo("Bearer");
+        assertThat(tokenDto.getToken()).isNotBlank();
+        assertThat(tokenDto.getType()).isEqualTo("Bearer");
     }
 }

@@ -1,7 +1,10 @@
 package com.griddynamics.ngolovin.store.order.domain;
 
 import com.griddynamics.ngolovin.store.product.domain.ProductEntity;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -17,6 +20,9 @@ import java.math.BigDecimal;
 @Entity
 @Table(name = "order_items")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class OrderItemEntity {
 
     @Id

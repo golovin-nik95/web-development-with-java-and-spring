@@ -13,7 +13,6 @@ import com.griddynamics.ngolovin.store.order.web.dto.OrderDto;
 import com.griddynamics.ngolovin.store.order.web.dto.OrderItemDto;
 import com.griddynamics.ngolovin.store.product.dao.ProductRepository;
 import com.griddynamics.ngolovin.store.product.domain.ProductEntity;
-import org.assertj.core.api.Assertions;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +33,7 @@ import java.util.stream.Collectors;
 
 import static com.griddynamics.ngolovin.store.StoreTestConfig.USER_EMAIL;
 import static com.griddynamics.ngolovin.store.StoreTestConfig.USER_PASSWORD;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -75,20 +75,20 @@ public class OrderControllerTest {
                 .getContentAsString();
         List<OrderDto> orderDtos = objectMapper.readValue(responseBody, new TypeReference<List<OrderDto>>() {});
         orderDtos.sort(Comparator.comparingLong(OrderDto::getId));
-        Assertions.assertThat(orderDtos).hasSize(3);
+        assertThat(orderDtos).hasSize(3);
 
         OrderDto orderDto = orderDtos.get(0);
-        Assertions.assertThat(orderDto.getId()).isEqualTo(1L);
-        Assertions.assertThat(orderDto.getDate()).isEqualTo(LocalDate.of(2019, 10, 14));
-        Assertions.assertThat(orderDto.getTotal()).isEqualByComparingTo("93.40");
-        Assertions.assertThat(orderDto.getStatus()).isEqualTo(OrderStatus.PENDING);
-        Assertions.assertThat(orderDto.getItems()).hasSize(3);
+        assertThat(orderDto.getId()).isEqualTo(1L);
+        assertThat(orderDto.getDate()).isEqualTo(LocalDate.of(2019, 10, 14));
+        assertThat(orderDto.getTotal()).isEqualByComparingTo("93.40");
+        assertThat(orderDto.getStatus()).isEqualTo(OrderStatus.PENDING);
+        assertThat(orderDto.getItems()).hasSize(3);
 
         OrderItemDto orderItemDto = orderDto.getItems().get(0);
-        Assertions.assertThat(orderItemDto.getOrdinal()).isEqualTo(1);
-        Assertions.assertThat(orderItemDto.getProductTitle()).isEqualTo("Pen");
-        Assertions.assertThat(orderItemDto.getQuantity()).isEqualTo(7);
-        Assertions.assertThat(orderItemDto.getSubtotal()).isEqualTo("53.20");
+        assertThat(orderItemDto.getOrdinal()).isEqualTo(1);
+        assertThat(orderItemDto.getProductTitle()).isEqualTo("Pen");
+        assertThat(orderItemDto.getQuantity()).isEqualTo(7);
+        assertThat(orderItemDto.getSubtotal()).isEqualTo("53.20");
     }
 
     @Test
@@ -109,25 +109,25 @@ public class OrderControllerTest {
                 .getContentAsString();
         OrderDto orderDto = objectMapper.readValue(responseBody, OrderDto.class);
 
-        Assertions.assertThat(orderDto.getId()).isNotNull();
-        Assertions.assertThat(orderDto.getDate()).isEqualTo(LocalDate.now());
-        Assertions.assertThat(orderDto.getTotal()).isEqualByComparingTo("93.40");
-        Assertions.assertThat(orderDto.getStatus()).isEqualTo(OrderStatus.PENDING);
-        Assertions.assertThat(orderDto.getItems()).hasSize(3);
+        assertThat(orderDto.getId()).isNotNull();
+        assertThat(orderDto.getDate()).isEqualTo(LocalDate.now());
+        assertThat(orderDto.getTotal()).isEqualByComparingTo("93.40");
+        assertThat(orderDto.getStatus()).isEqualTo(OrderStatus.PENDING);
+        assertThat(orderDto.getItems()).hasSize(3);
 
         OrderItemDto orderItemDto = orderDto.getItems().get(0);
-        Assertions.assertThat(orderItemDto.getOrdinal()).isEqualTo(1);
-        Assertions.assertThat(orderItemDto.getProductTitle()).isEqualTo("Pen");
-        Assertions.assertThat(orderItemDto.getQuantity()).isEqualTo(7L);
-        Assertions.assertThat(orderItemDto.getSubtotal()).isEqualByComparingTo("53.20");
+        assertThat(orderItemDto.getOrdinal()).isEqualTo(1);
+        assertThat(orderItemDto.getProductTitle()).isEqualTo("Pen");
+        assertThat(orderItemDto.getQuantity()).isEqualTo(7L);
+        assertThat(orderItemDto.getSubtotal()).isEqualByComparingTo("53.20");
 
-        Assertions.assertThat(cartItems).isEmpty();
+        assertThat(cartItems).isEmpty();
 
         productRepository.findAllById(productsAvailabilityBefore.keySet()).stream()
                 .collect(Collectors.toMap(ProductEntity::getId, ProductEntity::getAvailable))
                 .forEach((productId, availableAfter) -> {
                     Long availableBefore = productsAvailabilityBefore.get(productId);
-                    Assertions.assertThat(availableAfter).isEqualTo(availableBefore - availableBefore / 2);
+                    assertThat(availableAfter).isEqualTo(availableBefore - availableBefore / 2);
                 });
     }
 
@@ -148,17 +148,17 @@ public class OrderControllerTest {
                 .andReturn()
                 .getResponse()
                 .getContentAsString();
-        Assertions.assertThat(responseBody).isEmpty();
+        assertThat(responseBody).isEmpty();
 
         OrderEntity orderAfter = orderRepository.findById(orderId)
                 .orElseThrow(AssertionError::new);
-        Assertions.assertThat(orderAfter.getStatus()).isEqualTo(OrderStatus.CANCELLED);
+        assertThat(orderAfter.getStatus()).isEqualTo(OrderStatus.CANCELLED);
 
         productRepository.findAllById(productsAvailabilityBefore.keySet()).stream()
                 .collect(Collectors.toMap(ProductEntity::getId, ProductEntity::getAvailable))
                 .forEach((productId, availableAfter) -> {
                     Long availableBefore = productsAvailabilityBefore.get(productId);
-                    Assertions.assertThat(availableAfter).isEqualTo(availableBefore * 3 / 2);
+                    assertThat(availableAfter).isEqualTo(availableBefore * 3 / 2);
                 });
     }
 

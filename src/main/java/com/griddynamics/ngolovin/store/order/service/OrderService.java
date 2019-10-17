@@ -23,7 +23,6 @@ import org.springframework.util.CollectionUtils;
 import javax.transaction.Transactional;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -100,14 +99,10 @@ public class OrderService {
     }
 
     private void returnBackOrderedProducts(OrderEntity order) {
-        List<ProductEntity> updatedProducts = order.getItems().stream()
-                .map(orderItem -> {
-                    ProductEntity product = orderItem.getProduct();
-                    Long newAvailable = product.getAvailable() + orderItem.getQuantity();
-                    product.setAvailable(newAvailable);
-                    return product;
-                })
-                .collect(Collectors.toList());
-        productService.saveProducts(updatedProducts);
+        order.getItems().forEach(orderItem -> {
+            ProductEntity product = orderItem.getProduct();
+            Long newAvailable = product.getAvailable() + orderItem.getQuantity();
+            product.setAvailable(newAvailable);
+        });
     }
 }

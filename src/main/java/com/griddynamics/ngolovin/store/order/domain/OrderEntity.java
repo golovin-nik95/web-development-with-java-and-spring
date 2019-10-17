@@ -1,7 +1,10 @@
 package com.griddynamics.ngolovin.store.order.domain;
 
 import com.griddynamics.ngolovin.store.auth.domain.UserEntity;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -24,6 +27,9 @@ import java.util.List;
 @Entity
 @Table(name = "orders")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class OrderEntity {
 
     @Id
@@ -47,5 +53,6 @@ public class OrderEntity {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JoinColumn(name = "order_id", nullable = false)
+    @Builder.Default
     private List<OrderItemEntity> items = new ArrayList<>();
 }
